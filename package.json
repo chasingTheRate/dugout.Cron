@@ -1,0 +1,24 @@
+{
+  "name": "dugout.cron",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chasingTheRate/dugout.Cron.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chasingTheRate/dugout.Cron/issues"
+  },
+  "homepage": "https://github.com/chasingTheRate/dugout.Cron#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "cron": "^1.7.1",
+    "dotenv": "^7.0.0"
+  }
+}
