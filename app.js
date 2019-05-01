@@ -6,6 +6,6 @@ console.log(`Starting Cron Jobs...`);
 
 //  Daily Cron
 
-new CronJob('* * 3 * * *', () => {
+new CronJob('* 3 * * *', () => {
   dugout.getInitialBoxscores();
 }, null, true, 'America/Winnipeg');
