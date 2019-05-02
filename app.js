@@ -1,4 +1,3 @@
-require('dotenv').config();
 const CronJob = require('cron').CronJob;
 const dugout = require('./services/dugoutService');
 
