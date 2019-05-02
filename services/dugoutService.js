@@ -1,56 +1,53 @@
+const debug = require('debug')('dugoutService')
 const axios = require('axios');
 const moment = require('moment');
 const util = require('util');
+const gameStatusTypes = require('../models/gameStatusTypes');
 
 const setTimeoutPromise = util.promisify(setTimeout);
 
 const baseUrl = process.env.DUGOUT_WEBAPI_BASE_URL;
+const delayInMilliseconds = 300000;
 
-function getDate() {
-  
-}
+var intervalId;
 
 async function getInitialBoxscores() {
+  debug('getInitialBoxscores');
   const date = moment().format('L');
   const response = await axios.post(`${baseUrl}/UpdateBoxscores?date=${date}`);
   const boxscores = response.data;
   const earliestGame = boxscores[0];
   const earliestGameTimeInMilliseconds = moment(earliestGame.gameDate).valueOf();
   const nowInMilliseconds = moment().valueOf();
-  const timeDifference = earliestGameTimeInMilliseconds - nowInMilliseconds;
-  if(timeDifference > 0){
-    setTimeoutPromise(100, date) // Replace with timeDifference
+  const timeDiffInMilliSecs = earliestGameTimeInMilliseconds - nowInMilliseconds;
+  if(timeDiffInMilliSecs > 0){
+    setTimeoutPromise(timeDiffInMilliSecs, date)
     .then(startUpdatingBoxscores);
+  } else {
+    startUpdatingBoxscores(date)
   }
 }
 
-var count = 0;
-var intervalId;
-
-function updateBoxscores(date){
-  count += 1;
-  console.log(count);
-  if(count >= 5){
+async function updateBoxscores(date){
+  debug('updateBoxscores');
+  var allGamesFinal = false
+  const response = await axios.get(`${baseUrl}/boxscores?date=${date}`);
+  const boxscores = response.data.boxscores;
+  for (const boxscore of boxscores) {
+    if (boxscore.status.statusCode !== gameStatusTypes.final) {
+      break;
+    }
+    allGamesFinal = true;
+  }
+  if(allGamesFinal){
     clearInterval(intervalId);
-    count = 0;
-    intervalId = setInterval((date) => updateBoxscores(date), 1000);
   }
 }
 
 async function startUpdatingBoxscores(date) {
-  console.log('startUpdatingBoxscores')
-  console.log(date);
-  intervalId = setInterval((date) => updateBoxscores(date), 1000);
-  console.log(intervalId);
-  // var allGamesFinal = false
-  // const response = await axios.get(`${baseUrl}/boxscores?date=${date}`);
-  // const boxscores = response.data.boxscores;
-  // for (const boxscore of boxscores) {
-  //   console.log(boxscore.status.statusCode);
-  //   if (boxscore.status.statusCode === 'F') {
-  //     break;
-  //   }
-  // }
+  debug('startUpdatingBoxscores');
+  updateBoxscores(date);
+  intervalId = setInterval(() => updateBoxscores(date), delayInMilliseconds);
 }
 
 module.exports = {
