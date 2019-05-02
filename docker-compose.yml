@@ -4,7 +4,7 @@ services:
     container_name: dugoutCron
     build: .
     ports:
-     - "5040:80"
+     - "5555:80"
     volumes:
      - .:/app/src
     restart: always

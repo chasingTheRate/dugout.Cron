@@ -30,14 +30,14 @@ async function getInitialBoxscores() {
 
 async function updateBoxscores(date){
   debug('updateBoxscores');
-  var allGamesFinal = false
+  var allGamesFinal = true;
   const response = await axios.get(`${baseUrl}/boxscores?date=${date}`);
   const boxscores = response.data.boxscores;
   for (const boxscore of boxscores) {
-    if (boxscore.status.statusCode !== gameStatusTypes.final) {
+    if (boxscore.status.statusCode != gameStatusTypes.final) {
+      allGamesFinal = false;
       break;
     }
-    allGamesFinal = true;
   }
   if(allGamesFinal){
     clearInterval(intervalId);
