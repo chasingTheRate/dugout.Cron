@@ -5,7 +5,8 @@ console.log(`Starting Cron Jobs...`);
 
 //  Daily Cron
 
-new CronJob('0 3 * * *', () => {
+new CronJob('0 20 8 * * *', () => {
+  console.log('cron fired');
   //dugout.getInitialBoxscores();
 }, null, true, 'America/Winnipeg');
 

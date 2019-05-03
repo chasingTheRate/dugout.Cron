@@ -8,6 +8,8 @@ services:
     volumes:
      - .:/app/src
     restart: always
+    environment:
+      TZ: "America/Winnipeg"
 
 networks:
   default:
