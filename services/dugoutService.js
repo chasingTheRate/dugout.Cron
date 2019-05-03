@@ -35,6 +35,7 @@ async function getInitialBoxscores() {
 
 async function updateBoxscores(date){
   debug('updateBoxscores');
+<<<<<<< HEAD
   console.log('updateBoxscores');
   var allGamesFinal = true
   try {
@@ -55,6 +56,19 @@ async function updateBoxscores(date){
     }
   } catch {
     console.log(`Error Getting Boxscores`);
+=======
+  var allGamesFinal = true;
+  const response = await axios.get(`${baseUrl}/boxscores?date=${date}`);
+  const boxscores = response.data.boxscores;
+  for (const boxscore of boxscores) {
+    if (boxscore.status.statusCode != gameStatusTypes.final) {
+      allGamesFinal = false;
+      break;
+    }
+  }
+  if(allGamesFinal){
+    clearInterval(intervalId);
+>>>>>>> 9bd73db7f65cd2c123a55b0fc0adba53a6cb48ba
   }
 }
 
