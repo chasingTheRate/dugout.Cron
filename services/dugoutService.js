@@ -7,7 +7,7 @@ const gameStatusTypes = require('../models/gameStatusTypes');
 const setTimeoutPromise = util.promisify(setTimeout);
 
 const baseUrl = process.env.DUGOUT_WEBAPI_BASE_URL;
-const delayInMilliseconds = 3000; //  5min
+const delayInMilliseconds = 300000; //  5min
 
 var intervalId;
 
@@ -21,21 +21,21 @@ async function getInitialBoxscores() {
     const earliestGame = boxscores[0];
     const earliestGameTimeInMilliseconds = moment(earliestGame.gameDate).valueOf();
     const nowInMilliseconds = moment().valueOf();
-    const timeDiffInMilliSecs = 5000 //earliestGameTimeInMilliseconds - nowInMilliseconds;
+    const timeDiffInMilliSecs = earliestGameTimeInMilliseconds - nowInMilliseconds;
+    console.log(`timeDiffInMilliSecs: ${timeDiffInMilliSecs}`);
     if(timeDiffInMilliSecs > 0){
-      //setTimeoutPromise(timeDiffInMilliSecs, date)
-      //.then(startUpdatingBoxscores);
+      setTimeoutPromise(timeDiffInMilliSecs, date)
+      .then(startUpdatingBoxscores);
     } else {
-      //startUpdatingBoxscores(date)
+      startUpdatingBoxscores(date)
     }
   } catch {
-    console.log('error');
+    console.log('error: getInitialBoxscores');
   }
 }
 
 async function updateBoxscores(date){
   debug('updateBoxscores');
-<<<<<<< HEAD
   console.log('updateBoxscores');
   var allGamesFinal = true
   try {
@@ -44,7 +44,7 @@ async function updateBoxscores(date){
     for (const boxscore of boxscores) {
       if (boxscore.status.statusCode !== gameStatusTypes.final) {
         console.log(boxscore.status.statusCode);
-        //axios.post(`${baseUrl}/UpdateBoxscores?date=${date}`)
+        axios.post(`${baseUrl}/UpdateBoxscores?date=${date}`)
         allGamesFinal = false;
         break;
       }
@@ -56,19 +56,6 @@ async function updateBoxscores(date){
     }
   } catch {
     console.log(`Error Getting Boxscores`);
-=======
-  var allGamesFinal = true;
-  const response = await axios.get(`${baseUrl}/boxscores?date=${date}`);
-  const boxscores = response.data.boxscores;
-  for (const boxscore of boxscores) {
-    if (boxscore.status.statusCode != gameStatusTypes.final) {
-      allGamesFinal = false;
-      break;
-    }
-  }
-  if(allGamesFinal){
-    clearInterval(intervalId);
->>>>>>> 9bd73db7f65cd2c123a55b0fc0adba53a6cb48ba
   }
 }
 
