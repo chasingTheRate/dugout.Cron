@@ -2,7 +2,7 @@ const debug = require('debug')('dugoutService')
 const axios = require('axios');
 const moment = require('moment');
 const util = require('util');
-const gameAbstractGameCodes = require('../models/gameStatusTypes');
+const gameAbstractGameCodes = require('../models/gameAbstractGameCodes');
 
 const setTimeoutPromise = util.promisify(setTimeout);
 
