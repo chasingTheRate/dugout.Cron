@@ -2,7 +2,7 @@ const debug = require('debug')('dugoutService')
 const axios = require('axios');
 const moment = require('moment');
 const util = require('util');
-const gameStatusTypes = require('../models/gameStatusTypes');
+const gameAbstractGameCodes = require('../models/gameStatusTypes');
 
 const setTimeoutPromise = util.promisify(setTimeout);
 
@@ -42,7 +42,7 @@ async function updateBoxscores(date){
     const response = await axios.get(`${baseUrl}/boxscores?date=${date}`);
     const boxscores = response.data.boxscores;
     for (const boxscore of boxscores) {
-      if (boxscore.status.statusCode !== gameStatusTypes.final) {
+      if (boxscore.status.abstractGameCode !== gameAbstractGameCodes.final) {
         console.log(boxscore.status.statusCode);
         axios.post(`${baseUrl}/UpdateBoxscores?date=${date}`)
         allGamesFinal = false;
