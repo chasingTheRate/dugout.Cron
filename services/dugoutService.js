@@ -49,6 +49,7 @@ async function updateBoxscores(date){
           axios.post(`${baseUrl}/UpdateBoxscores?date=${date}`)
         } catch (err) {
           console.log(`Error - UpdateBoxscores (POST)`);
+          console.error(err);
         }
         break;
       }
