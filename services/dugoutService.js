@@ -44,8 +44,12 @@ async function updateBoxscores(date){
     for (const boxscore of boxscores) {
       if (boxscore.status.abstractGameCode !== gameAbstractGameCodes.final) {
         console.log(boxscore.status.statusCode);
-        axios.post(`${baseUrl}/UpdateBoxscores?date=${date}`)
         allGamesFinal = false;
+        try {
+          axios.post(`${baseUrl}/UpdateBoxscores?date=${date}`)
+        } catch (err) {
+          console.log(`Error - UpdateBoxscores (POST)`);
+        }
         break;
       }
     }
