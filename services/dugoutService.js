@@ -11,6 +11,20 @@ const delayInMilliseconds = 300000; //  5min
 
 var intervalId;
 
+function getEarliestGameTime(boxscores) {
+  let earliestTime;
+  boxscores.map( (boxscore, index) => {
+    if (index === 0) {
+      earliestTime = boxscore.gameDate;
+    } else {
+      if ( new Date(boxscore.gameDate) < new Date(earliestTime)) {
+        earliestTime = boxscore.gameDate;
+      }
+    }
+  })
+  return earliestTime;
+}
+
 async function getInitialBoxscores() {
   try {
     debug('getInitialBoxscores');
@@ -18,8 +32,9 @@ async function getInitialBoxscores() {
     const date = moment().format('L');
     const response = await axios.post(`${baseUrl}/UpdateBoxscores?date=${date}`);
     const boxscores = response.data;
-    const earliestGame = boxscores[0];
-    const earliestGameTimeInMilliseconds = moment(earliestGame.gameDate).valueOf();
+    const earliestGame = getEarliestGameTime(boxscores);
+    console.log(`Earliest Time: ${moment(earliestGame).format('MMMM Do YYYY, h:mm:ss a')}`);
+    const earliestGameTimeInMilliseconds = moment(earliestGame).valueOf();
     const nowInMilliseconds = moment().valueOf();
     const timeDiffInMilliSecs = earliestGameTimeInMilliseconds - nowInMilliseconds;
     console.log(`timeDiffInMilliSecs: ${timeDiffInMilliSecs}`);
