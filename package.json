@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "debug": "DEBUG=dugoutService node app.js"
+    "debug": "DEBUG=dugoutService node app.js",
+    "docker": "docker-compose up --build -d"
   },
   "repository": {
     "type": "git",
