@@ -86,6 +86,12 @@ async function startUpdatingBoxscores(date) {
   intervalId = setInterval(updateBoxscores, delayInMilliseconds, date);
 }
 
+async function updateLeagueLeaders() {
+  debug('updateLeagueLeaders');
+  await axios.post(`${baseUrl}/UpdateLeagueLeaders`);
+}
+
 module.exports = {
-  getInitialBoxscores
+  getInitialBoxscores,
+  updateLeagueLeaders,
 }
