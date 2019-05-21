@@ -88,7 +88,13 @@ async function startUpdatingBoxscores(date) {
 
 async function updateLeagueLeaders() {
   debug('updateLeagueLeaders');
-  await axios.post(`${baseUrl}/UpdateLeagueLeaders`);
+  console.log('updateLeagueLeaders');
+  try {
+    await axios.post(`${baseUrl}/UpdateLeagueLeaders`);
+  } catch (err) {
+    console.log(`Error: updateLeagueLeaders`);
+    console.error(err);
+  }
 }
 
 module.exports = {
